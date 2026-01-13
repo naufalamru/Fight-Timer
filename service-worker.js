@@ -9,8 +9,8 @@ self.addEventListener("install", event => {
         "./manifest.json",
         "./icon-192.png",
         "./icon-512.png",
-        "./sound/bell.mp3",
-        "./sound/ko.mp3"
+        "./sound/BELL.mp3",
+        "./sound/KO.mp3"
       ]);
     })
   );
@@ -23,3 +23,4 @@ self.addEventListener("fetch", event => {
     })
   );
 });
+
