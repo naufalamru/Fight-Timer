@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIGHT TIMER</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ff0000">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .timer-box {
+      background: #222;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      width: 300px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+    h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+    input {
+      width: 80px;
+      padding: 10px;
+      text-align: center;
+      font-size: 18px;
+      margin: 5px;
+    }
+    button {
+      padding: 10px 15px;
+      margin: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      background: #e74c3c;
+      color: #fff;
+    }
+    button:hover {
+      background: #c0392b;
+    }
+  </style>
+</head>
+<body>
+
+<audio id="alarmKO" src="sound/KO.mp3"></audio>
+<audio id="alarmSound" src="sound/BELL.mp3"></audio>
+
+  <div class="timer-box">
+    <h2 id="detail"></h2>
+    <h1 id="display">00:00</h1>
+    <button onclick="setThree()">3 Mins</button>
+    <button onclick="setFive()">5 Mins</button>
+
+    <div>
+      <input type="number" id="menit" placeholder="Menit" min="0">
+      <input type="number" id="detik" placeholder="Detik" min="0" max="59">
+    </div>
+
+    <div>
+      <button onclick="startTimer()">Start</button>
+      <button onclick="pauseTimer()">Pause</button>
+      <button onclick="resetTimer()">Reset</button>
+    </div>
+    <hr>
+    <button onclick="KO()">KO Bell</button>
+  </div>
+
+  <script>
+    let totalDetik = 0;
+    let interval = null;
+
+    function updateDisplay() {
+      let m = Math.floor(totalDetik / 60);
+      let d = totalDetik % 60;
+      document.getElementById('display').innerText =
+        String(m).padStart(2, '0') + ':' + String(d).padStart(2, '0');
+    }
+
+    function startTimer() {
+        document.getElementById('alarmSound').play();
+        document.getElementById("detail").innerText = "🥊🥊🥊FIGHT🥊🥊🥊";
+      if (interval) return;
+
+      if (totalDetik === 0) {
+        const menit = parseInt(document.getElementById('menit').value) || 0;
+        const detik = parseInt(document.getElementById('detik').value) || 0;
+        totalDetik = menit * 60 + detik;
+      }
+
+      if (totalDetik <= 0) return alert('Masukkan waktu!');
+
+      interval = setInterval(() => {
+        totalDetik--;
+        updateDisplay();
+
+        if (totalDetik <= 0) {
+            document.getElementById('alarmSound').play();
+          clearInterval(interval);
+          interval = null;
+          document.getElementById("detail").innerText = "⏱️TIME IS UP⏱️";
+          alert('Waktu habis!');
+        }
+      }, 1000);
+    }
+
+    function pauseTimer() {
+        document.getElementById("detail").innerText = "PAUSED!!!";
+      clearInterval(interval);
+      interval = null;
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      totalDetik = 0;
+      updateDisplay();
+      document.getElementById('menit').value = '';
+      document.getElementById('detik').value = '';
+      document.getElementById("detail").innerText = '';
+    }
+
+    function KO(){
+        document.getElementById('alarmKO').play();
+          clearInterval(interval);
+          interval = null;
+    }
+
+    function fight() {
+    document.getElementById("details").innerText = "🥊🥊🥊FIGHT🥊🥊🥊";
+  }
+
+  function setThree(){
+    document.getElementById('menit').value = '03';
+      document.getElementById('detik').value = '00';
+  }
+
+  function setFive(){
+    document.getElementById('menit').value = '05';
+      document.getElementById('detik').value = '00';
+  }
+
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+  }
+  </script>
+
+</body>
+</html>

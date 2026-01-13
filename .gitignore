@@ -1,0 +1,13 @@
+# Electron / Node
+node_modules/
+dist/
+out/
+
+# Build files
+*.exe
+*.app
+*.deb
+
+# System
+.DS_Store
+Thumbs.db
