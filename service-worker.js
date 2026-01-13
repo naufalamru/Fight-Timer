@@ -2,7 +2,7 @@ self.addEventListener("install", e => {
   e.waitUntil(
     caches.open("timer-cache").then(cache =>
       cache.addAll([
-        "timer.html",
+        "index.html",
         "manifest.json",
         "sound/BELL.MP3",
         "sound/KO.MP3"
@@ -16,3 +16,4 @@ self.addEventListener("fetch", e => {
     caches.match(e.request).then(res => res || fetch(e.request))
   );
 });
+
